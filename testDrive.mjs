@@ -1,15 +1,17 @@
 import BinarySearchTree from "./BinarySearchTree.mjs";
 
-const randomArray = [...Array(20)].map(() => Math.floor(Math.random() * 15));
+const randomArray = [...Array(25)].map(() => Math.floor(Math.random() * 100));
 
-const constArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
-const bst = new BinarySearchTree(constArray);
-
+const bst = new BinarySearchTree(randomArray);
 bst.prettyPrint();
 console.log(bst.isBalanced());
 
-bst.insert(1000).insert(2000).insert(10000).insert(5000);
+console.log(bst.levelOrder());
+console.log(bst.preOrder());
+console.log(bst.postOrder());
+console.log(bst.inOrder());
+
+bst.insert(101).insert(250).insert(200).insert(155).insert(182);
 
 bst.prettyPrint();
 console.log(bst.isBalanced());
@@ -17,3 +19,8 @@ console.log(bst.isBalanced());
 bst.rebalance();
 bst.prettyPrint();
 console.log(bst.isBalanced());
+
+console.log(bst.levelOrder());
+console.log(bst.preOrder());
+console.log(bst.postOrder());
+console.log(bst.inOrder());
