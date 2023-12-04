@@ -15,8 +15,8 @@ export default class BinarySearchTree {
     if (startIndex > endIndex) return null;
     const midIndex = Math.floor((startIndex + endIndex) / 2);
     const newTNode = new TNode(array[midIndex]);
-    newTNode.left = this.buildTree(array, startIndex, midIndex - 1);
-    newTNode.right = this.buildTree(array, midIndex + 1, endIndex);
+    newTNode.left = this.#buildTree(array, startIndex, midIndex - 1);
+    newTNode.right = this.#buildTree(array, midIndex + 1, endIndex);
     return newTNode;
   }
 
@@ -109,9 +109,3 @@ const bst = new BinarySearchTree(constArray);
 bst.insert(10).insert(9).insert(7000).delete(7).delete(9).delete(4);
 
 bst.prettyPrint();
-
-const emptyBST = new BinarySearchTree();
-
-emptyBST.insert(1);
-
-emptyBST.prettyPrint();
