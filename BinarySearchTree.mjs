@@ -1,5 +1,6 @@
 import TNode from "./TNode.mjs";
 import prettyPrintBST from "./prettyPrintBST.mjs";
+import NodeLocation from "./NodeLocation.mjs";
 
 export default class BinarySearchTree {
   #root;
@@ -35,11 +36,11 @@ export default class BinarySearchTree {
       if (side === "right") node = node.right;
       else node = node.left;
     }
-    return [parent, node, side];
+    return new NodeLocation(parent, node, side);
   }
 
   insert(value) {
-    const [parent, node, side] = this.#locateNode(value);
+    const { parent, node, side } = this.#locateNode(value);
     if (node != null && node.value === value) return this;
     const newTNode = new TNode(value);
     if (parent == null) this.#root = newTNode;
@@ -49,7 +50,7 @@ export default class BinarySearchTree {
   }
 
   #deleteNode(nodeLocation) {
-    const [parent, node, side] = nodeLocation;
+    const { parent, node, side } = nodeLocation;
     if (node == null) return null;
     if (node.left == null && node.right == null) {
       if (side === "right") parent.right = null;
@@ -65,7 +66,11 @@ export default class BinarySearchTree {
         prevNode = nextNode;
         nextNode = nextNode.left;
       }
-      const nextNodeLocation = [prevNode, nextNode, nextNodeSide];
+      const nextNodeLocation = new NodeLocation(
+        prevNode,
+        nextNode,
+        nextNodeSide
+      );
       this.#deleteNode(nextNodeLocation);
       node.value = nextNode.value;
       return node;
@@ -81,7 +86,7 @@ export default class BinarySearchTree {
     return this;
   }
 
-  find(value) {}
+  contains(value) {}
 
   levelOrder(callbackFn) {}
 
@@ -100,12 +105,14 @@ export default class BinarySearchTree {
   rebalance() {}
 }
 
-// const randomArray = [...Array(20)].map(() => Math.floor(Math.random() * 100));
+const randomArray = [...Array(20)].map(() => Math.floor(Math.random() * 15));
 
 const constArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-const bst = new BinarySearchTree(constArray);
+const bst = new BinarySearchTree(randomArray);
 
-bst.insert(10).insert(9).insert(7000).delete(7).delete(9).delete(4);
+bst.prettyPrint();
+
+bst.delete(7).delete(10).delete(4);
 
 bst.prettyPrint();
