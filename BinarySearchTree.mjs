@@ -5,11 +5,9 @@ import NodeLocation from "./NodeLocation.mjs";
 export default class BinarySearchTree {
   #root;
 
-  #originalData;
-
   constructor(array) {
-    this.#originalData = [...new Set(array)].sort((a, b) => a - b);
-    this.#root = this.#buildTree(this.#originalData);
+    const cleanedInputData = [...new Set(array)].sort((a, b) => a - b);
+    this.#root = this.#buildTree(cleanedInputData);
   }
 
   #buildTree(array, startIndex = 0, endIndex = array.length - 1) {
@@ -147,7 +145,10 @@ export default class BinarySearchTree {
     return this.isBalanced(root.left) && this.isBalanced(root.right);
   }
 
-  rebalance() {}
+  rebalance() {
+    const sortedArray = this.inOrder();
+    this.#root = this.#buildTree(sortedArray);
+  }
 }
 
 const randomArray = [...Array(20)].map(() => Math.floor(Math.random() * 15));
@@ -161,5 +162,9 @@ console.log(bst.isBalanced());
 
 bst.insert(1000).insert(2000).insert(10000).insert(5000);
 
+bst.prettyPrint();
+console.log(bst.isBalanced());
+
+bst.rebalance();
 bst.prettyPrint();
 console.log(bst.isBalanced());
