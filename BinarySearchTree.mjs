@@ -86,7 +86,9 @@ export default class BinarySearchTree {
     return this;
   }
 
-  contains(value) {}
+  contains(value) {
+    return !!this.#locateNode(value).node;
+  }
 
   levelOrder(callbackFn) {}
 
