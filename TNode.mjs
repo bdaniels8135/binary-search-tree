@@ -1,6 +1,6 @@
 export default class TNode {
-  constructor(data = null, right = null, left = null) {
-    this.data = data;
+  constructor(value = null, right = null, left = null) {
+    this.value = value;
     this.right = right;
     this.left = left;
   }
