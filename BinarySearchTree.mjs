@@ -5,11 +5,11 @@ import NodeLocation from "./NodeLocation.mjs";
 export default class BinarySearchTree {
   #root;
 
-  #data;
+  #originalData;
 
   constructor(array) {
-    this.#data = [...new Set(array)].sort((a, b) => a - b);
-    this.#root = this.#buildTree(this.#data);
+    this.#originalData = [...new Set(array)].sort((a, b) => a - b);
+    this.#root = this.#buildTree(this.#originalData);
   }
 
   #buildTree(array, startIndex = 0, endIndex = array.length - 1) {
@@ -28,15 +28,17 @@ export default class BinarySearchTree {
   #locateNode(value) {
     let parent;
     let side;
+    let depth = 0;
     let node = this.#root;
     while (node !== null) {
       if (node.value === value) break;
+      depth += 1;
       parent = node;
       side = node.value < value ? "right" : "left";
       if (side === "right") node = node.right;
       else node = node.left;
     }
-    return new NodeLocation(parent, node, side);
+    return new NodeLocation(parent, node, side, depth);
   }
 
   insert(value) {
@@ -134,11 +136,16 @@ export default class BinarySearchTree {
     return output;
   }
 
-  height(node) {}
+  #height(node) {
+    if (node == null) return -1;
+    return Math.max(this.#height(node.left), this.#height(node.right)) + 1;
+  }
 
-  depth(node) {}
-
-  isBalanced() {}
+  isBalanced(root = this.#root) {
+    if (root == null) return true;
+    if (this.#height(root.left) - this.#height(root.right) > 1) return false;
+    return this.isBalanced(root.left) && this.isBalanced(root.right);
+  }
 
   rebalance() {}
 }
@@ -147,18 +154,12 @@ const randomArray = [...Array(20)].map(() => Math.floor(Math.random() * 15));
 
 const constArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
-const bst = new BinarySearchTree(randomArray);
+const bst = new BinarySearchTree(constArray);
 
 bst.prettyPrint();
+console.log(bst.isBalanced());
 
-console.log(bst.levelOrder());
-console.log(bst.levelOrder((x) => 2 * x));
+bst.insert(1000).insert(2000).insert(10000).insert(5000);
 
-console.log(bst.inOrder());
-console.log(bst.inOrder((x) => 2 * x));
-
-console.log(bst.preOrder());
-console.log(bst.preOrder((x) => 2 * x));
-
-console.log(bst.postOrder());
-console.log(bst.postOrder((x) => 2 * x));
+bst.prettyPrint();
+console.log(bst.isBalanced());
