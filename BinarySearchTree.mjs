@@ -90,13 +90,49 @@ export default class BinarySearchTree {
     return !!this.#locateNode(value).node;
   }
 
-  levelOrder(callbackFn) {}
+  levelOrder(callbackFn = (x) => x) {
+    const q = [this.#root];
+    const output = [];
+    while (q.length !== 0) {
+      const itemToProcess = q.shift();
+      if (itemToProcess.left != null) q.push(itemToProcess.left);
+      if (itemToProcess.right != null) q.push(itemToProcess.right);
+      output.push(callbackFn(itemToProcess.value));
+    }
+    return output;
+  }
 
-  inOrder(callbackFn) {}
+  inOrder(callbackFn = (x) => x, root = this.#root) {
+    const output = [];
+    if (root.left != null) output.push(...this.inOrder(callbackFn, root.left));
+    output.push(callbackFn(root.value));
+    if (root.right != null) {
+      output.push(...this.inOrder(callbackFn, root.right));
+    }
+    return output;
+  }
 
-  preOrder(callbackFn) {}
+  preOrder(callbackFn = (x) => x, root = this.#root) {
+    const output = [];
+    output.push(callbackFn(root.value));
+    if (root.left != null) output.push(...this.preOrder(callbackFn, root.left));
+    if (root.right != null) {
+      output.push(...this.preOrder(callbackFn, root.right));
+    }
+    return output;
+  }
 
-  postOrder(callbackFn) {}
+  postOrder(callbackFn = (x) => x, root = this.#root) {
+    const output = [];
+    if (root.left != null) {
+      output.push(...this.postOrder(callbackFn, root.left));
+    }
+    if (root.right != null) {
+      output.push(...this.postOrder(callbackFn, root.right));
+    }
+    output.push(callbackFn(root.value));
+    return output;
+  }
 
   height(node) {}
 
@@ -115,6 +151,14 @@ const bst = new BinarySearchTree(randomArray);
 
 bst.prettyPrint();
 
-bst.delete(7).delete(10).delete(4);
+console.log(bst.levelOrder());
+console.log(bst.levelOrder((x) => 2 * x));
 
-bst.prettyPrint();
+console.log(bst.inOrder());
+console.log(bst.inOrder((x) => 2 * x));
+
+console.log(bst.preOrder());
+console.log(bst.preOrder((x) => 2 * x));
+
+console.log(bst.postOrder());
+console.log(bst.postOrder((x) => 2 * x));
